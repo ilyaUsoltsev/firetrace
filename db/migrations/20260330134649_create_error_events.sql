@@ -25,3 +25,7 @@ CREATE INDEX idx_error_events_payload
 
 -- migrate:down
 
+DROP TABLE IF EXISTS error_events;
+DROP EXTENSION IF EXISTS pgcrypto;
+
+

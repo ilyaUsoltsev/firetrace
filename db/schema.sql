@@ -34,6 +34,22 @@ SET default_tablespace = '';
 SET default_table_access_method = heap;
 
 --
+-- Name: click_events; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.click_events (
+    id uuid DEFAULT gen_random_uuid() NOT NULL,
+    session_id text NOT NULL,
+    user_id text,
+    event_name text NOT NULL,
+    page text,
+    element text,
+    payload jsonb,
+    created_at timestamp with time zone DEFAULT now() NOT NULL
+);
+
+
+--
 -- Name: error_events; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -43,7 +59,9 @@ CREATE TABLE public.error_events (
     level text NOT NULL,
     service text,
     payload jsonb,
-    created_at timestamp with time zone DEFAULT now() NOT NULL
+    created_at timestamp with time zone DEFAULT now() NOT NULL,
+    session_id text,
+    user_id text
 );
 
 
@@ -54,6 +72,14 @@ CREATE TABLE public.error_events (
 CREATE TABLE public.schema_migrations (
     version character varying NOT NULL
 );
+
+
+--
+-- Name: click_events click_events_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.click_events
+    ADD CONSTRAINT click_events_pkey PRIMARY KEY (id);
 
 
 --
@@ -70,6 +96,20 @@ ALTER TABLE ONLY public.error_events
 
 ALTER TABLE ONLY public.schema_migrations
     ADD CONSTRAINT schema_migrations_pkey PRIMARY KEY (version);
+
+
+--
+-- Name: idx_click_events_created_at; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX idx_click_events_created_at ON public.click_events USING btree (created_at DESC);
+
+
+--
+-- Name: idx_click_events_session_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX idx_click_events_session_id ON public.click_events USING btree (session_id);
 
 
 --
@@ -98,6 +138,20 @@ CREATE INDEX idx_error_events_payload ON public.error_events USING gin (payload)
 --
 
 CREATE INDEX idx_error_events_service ON public.error_events USING btree (service);
+
+
+--
+-- Name: idx_error_events_session_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX idx_error_events_session_id ON public.error_events USING btree (session_id);
+
+
+--
+-- Name: idx_error_events_user_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX idx_error_events_user_id ON public.error_events USING btree (user_id);
 
 
 --

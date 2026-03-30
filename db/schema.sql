@@ -112,4 +112,5 @@ CREATE INDEX idx_error_events_service ON public.error_events USING btree (servic
 --
 
 INSERT INTO public.schema_migrations (version) VALUES
-    ('20260330134649');
+    ('20260330134649'),
+    ('20260330171834');

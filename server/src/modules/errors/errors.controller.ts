@@ -20,7 +20,7 @@ export async function createErrorEvent(
   next: NextFunction,
 ) {
   try {
-    const { message, level, service, payload } = req.body;
+    const { message, level, service, payload } = req.body ?? {};
 
     if (!message || !level) {
       res.status(400).json({

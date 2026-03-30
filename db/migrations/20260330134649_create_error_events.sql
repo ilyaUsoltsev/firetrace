@@ -1,3 +1,4 @@
+-- migrate:up
 CREATE EXTENSION IF NOT EXISTS pgcrypto;
 
 CREATE TABLE error_events (
@@ -20,3 +21,7 @@ CREATE INDEX idx_error_events_service
 
 CREATE INDEX idx_error_events_payload
   ON error_events USING GIN (payload);
+
+
+-- migrate:down
+

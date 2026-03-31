@@ -1,6 +1,5 @@
 import { useEffect, useState } from 'react';
 import { record } from '@rrweb/record';
-import '@rrweb/replay/dist/style.css';
 import './App.css';
 
 const events: unknown[] = [];

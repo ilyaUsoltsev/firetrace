@@ -13,7 +13,7 @@ function App() {
       const body = JSON.stringify({
         payload: { payload: events },
         session_id: '123',
-        event_name: 'click',
+        event_name: 'record',
       });
       events.length = 0;
       fetch('http://localhost:3000/api/clicks', {

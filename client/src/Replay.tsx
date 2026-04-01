@@ -10,14 +10,9 @@ const Replay = () => {
     let cancelled = false;
 
     const getEvents = async () => {
-      const res = await fetch('http://localhost:3000/api/clicks');
+      const res = await fetch('http://localhost:3000/api/replays');
       const data = await res.json();
-
-      const record = data.filter(
-        (item: { event_name: string }) => item.event_name === 'record',
-      );
-
-      const events = record[2]?.payload?.payload;
+      const events = data[1].events;
       console.log(events, 'events');
       if (!containerRef.current) {
         console.error('No replay container');

@@ -66,6 +66,18 @@ CREATE TABLE public.error_events (
 
 
 --
+-- Name: replays; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.replays (
+    id uuid DEFAULT gen_random_uuid() NOT NULL,
+    events jsonb NOT NULL,
+    session_id text NOT NULL,
+    created_at timestamp with time zone DEFAULT now() NOT NULL
+);
+
+
+--
 -- Name: schema_migrations; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -88,6 +100,14 @@ ALTER TABLE ONLY public.click_events
 
 ALTER TABLE ONLY public.error_events
     ADD CONSTRAINT error_events_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: replays replays_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.replays
+    ADD CONSTRAINT replays_pkey PRIMARY KEY (id);
 
 
 --
@@ -167,4 +187,5 @@ CREATE INDEX idx_error_events_user_id ON public.error_events USING btree (user_i
 
 INSERT INTO public.schema_migrations (version) VALUES
     ('20260330134649'),
-    ('20260330171834');
+    ('20260330171834'),
+    ('20260401192731');

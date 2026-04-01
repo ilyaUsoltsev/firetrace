@@ -8,14 +8,14 @@ function App() {
   const [count, setCount] = useState(0);
 
   useEffect(() => {
+    const sessionId = sessionStorage.getItem('sessionId');
     const save = () => {
       const body = JSON.stringify({
-        payload: { payload: events },
-        session_id: '123',
-        event_name: 'record',
+        events,
+        session_id: sessionId,
       });
       events.length = 0;
-      fetch('http://localhost:3000/api/clicks', {
+      fetch('http://localhost:3000/api/replays', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

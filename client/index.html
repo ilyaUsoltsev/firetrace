@@ -13,8 +13,8 @@
     <script>
       document.addEventListener('click', (event) => {
         const sessionId =
-          localStorage.getItem('sessionId') || generateSessionId();
-        localStorage.setItem('sessionId', sessionId);
+          sessionStorage.getItem('sessionId') || generateSessionId();
+        sessionStorage.setItem('sessionId', sessionId);
 
         const clickData = {
           session_id: sessionId,

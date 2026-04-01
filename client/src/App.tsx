@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { record } from '@rrweb/record';
 import './App.css';
+import { Link } from 'react-router';
 
 const events: unknown[] = [];
 
@@ -48,6 +49,7 @@ function App() {
         doloribus earum impedit.
       </p>
       <p>Count: {count}</p>
+      <Link to='/replay'>Go to replay</Link>
       <button onClick={() => setCount(count + 1)}>Increment</button>
     </div>
   );

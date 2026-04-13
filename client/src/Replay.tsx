@@ -1,10 +1,11 @@
 import { useEffect, useRef } from 'react';
 import '@rrweb/replay/dist/style.css';
-import { Replayer } from '@rrweb/replay';
+import rrwebPlayer from 'rrweb-player';
+import 'rrweb-player/dist/style.css';
 
 const Replay = () => {
   const containerRef = useRef<HTMLDivElement | null>(null);
-  const replayerRef = useRef<Replayer | null>(null);
+  const replayerRef = useRef<rrwebPlayer | null>(null);
 
   useEffect(() => {
     let cancelled = false;
@@ -12,8 +13,8 @@ const Replay = () => {
     const getEvents = async () => {
       const res = await fetch('http://localhost:3000/api/replays');
       const data = await res.json();
-      const events = data[1].events;
-      console.log(events, 'events');
+      console.log(data, 'data');
+      const events = data[data.length - 1].events;
       if (!containerRef.current) {
         console.error('No replay container');
         return;
@@ -29,12 +30,13 @@ const Replay = () => {
       // Clear previous replayer content before creating a new one
       containerRef.current.innerHTML = '';
 
-      replayerRef.current = new Replayer(events, {
-        root: containerRef.current,
-        // UNSAFE_replayCanvas: true,
+      replayerRef.current = new rrwebPlayer({
+        target: containerRef.current!,
+        props: {
+          events,
+          showController: false,
+        },
       });
-
-      replayerRef.current.play();
     };
 
     getEvents().catch((err) => {
@@ -43,7 +45,6 @@ const Replay = () => {
 
     return () => {
       cancelled = true;
-      replayerRef.current?.destroy();
       replayerRef.current = null;
     };
   }, []);
@@ -51,7 +52,9 @@ const Replay = () => {
   return (
     <div>
       <h1>Replay</h1>
-      <button onClick={() => replayerRef.current?.play()}>Play</button>
+      <button onClick={() => replayerRef.current?.play()}>Start</button>
+      <button onClick={() => replayerRef.current?.pause()}>Pause</button>
+      <button onClick={() => replayerRef.current?.goto(0, false)}>Stop</button>
       <div
         ref={containerRef}
         style={{

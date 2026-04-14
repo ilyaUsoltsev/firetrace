@@ -14,7 +14,7 @@ const Replay = () => {
       const res = await fetch('http://localhost:3000/api/replays');
       const data = await res.json();
       console.log(data, 'data');
-      const events = data[data.length - 1].events;
+      const events = data[0]?.events;
       if (!containerRef.current) {
         console.error('No replay container');
         return;

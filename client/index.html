@@ -9,36 +9,5 @@
   <body>
     <div id="root"></div>
     <script type="module" src="/src/main.tsx"></script>
-
-    <script>
-      document.addEventListener('click', (event) => {
-        const sessionId =
-          sessionStorage.getItem('sessionId') || generateSessionId();
-        sessionStorage.setItem('sessionId', sessionId);
-
-        const clickData = {
-          session_id: sessionId,
-          event_name: 'click',
-          page: window.location.pathname,
-          element: event.target.tagName,
-          payload: {
-            x: event.clientX,
-            y: event.clientY,
-          },
-        };
-
-        fetch('http://localhost:3000/api/clicks', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify(clickData),
-        });
-      });
-
-      function generateSessionId() {
-        return Math.random().toString(36).substr(2, 9);
-      }
-    </script>
   </body>
 </html>

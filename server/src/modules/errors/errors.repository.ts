@@ -1,4 +1,4 @@
-import { query } from '../../db/query';
+import { appendEntry, readEntries } from '../../db/file-store';
 
 export type NewErrorEvent = {
   message: string;
@@ -21,36 +21,18 @@ export type ErrorEventRow = {
 };
 
 export async function selectRecentErrorEvents(): Promise<ErrorEventRow[]> {
-  const result = await query<ErrorEventRow>(
-    `
-    SELECT id, message, level, service, session_id, user_id, payload, created_at
-    FROM error_events
-    ORDER BY created_at DESC
-    LIMIT 100
-    `,
-  );
-
-  return result.rows;
+  return readEntries('error_event') as unknown as ErrorEventRow[];
 }
 
 export async function insertErrorEvent(
   input: NewErrorEvent,
 ): Promise<ErrorEventRow> {
-  const result = await query<ErrorEventRow>(
-    `
-    INSERT INTO error_events (message, level, service, session_id, user_id, payload)
-    VALUES ($1, $2, $3, $4, $5, $6)
-    RETURNING id, message, level, service, session_id, user_id, payload, created_at
-    `,
-    [
-      input.message,
-      input.level,
-      input.service ?? null,
-      input.session_id ?? null,
-      input.user_id ?? null,
-      input.payload ?? null,
-    ],
-  );
-
-  return result.rows[0];
+  return appendEntry('error_event', {
+    message: input.message,
+    level: input.level,
+    service: input.service ?? null,
+    session_id: input.session_id ?? null,
+    user_id: input.user_id ?? null,
+    payload: input.payload ?? null,
+  }) as unknown as ErrorEventRow;
 }

@@ -1,43 +1,9 @@
-import { useEffect, useState } from 'react';
-import { record } from '@rrweb/record';
+import { useState } from 'react';
 import './App.css';
 import { Link } from 'react-router';
 
-const events: unknown[] = [];
-
 function App() {
   const [count, setCount] = useState(0);
-
-  useEffect(() => {
-    const sessionId = sessionStorage.getItem('sessionId');
-    const save = () => {
-      const body = JSON.stringify({
-        events,
-        session_id: sessionId,
-      });
-      events.length = 0;
-      fetch('http://localhost:3000/api/replays', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body,
-      });
-    };
-
-    const stop = record({
-      emit(event) {
-        events.push(event);
-      },
-    });
-
-    const interval = setInterval(save, 5000);
-
-    return () => {
-      stop?.();
-      clearInterval(interval);
-    };
-  }, []);
 
   return (
     <div>

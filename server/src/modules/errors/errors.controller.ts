@@ -20,7 +20,8 @@ export async function createErrorEvent(
   next: NextFunction,
 ) {
   try {
-    const { message, level, service, session_id, user_id, payload } = req.body ?? {};
+    const { message, level, service, session_id, user_id, payload } =
+      req.body ?? {};
 
     if (!message || !level) {
       res.status(400).json({
@@ -33,7 +34,6 @@ export async function createErrorEvent(
       message,
       level,
       service,
-      session_id,
       user_id,
       payload,
     });

@@ -1,7 +1,6 @@
 import { appendEntry, readEntries } from '../../db/file-store';
 
 export type NewClickEvent = {
-  session_id: string;
   user_id?: string | null;
   event_name: string;
   page?: string | null;
@@ -11,7 +10,6 @@ export type NewClickEvent = {
 
 export type ClickEventRow = {
   id: string;
-  session_id: string;
   user_id: string | null;
   event_name: string;
   page: string | null;
@@ -28,7 +26,6 @@ export async function insertClickEvent(
   input: NewClickEvent,
 ): Promise<ClickEventRow> {
   return appendEntry('click_event', {
-    session_id: input.session_id,
     user_id: input.user_id ?? null,
     event_name: input.event_name,
     page: input.page ?? null,

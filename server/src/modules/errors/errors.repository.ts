@@ -4,7 +4,6 @@ export type NewErrorEvent = {
   message: string;
   level: string;
   service?: string | null;
-  session_id?: string | null;
   user_id?: string | null;
   payload?: unknown;
 };
@@ -14,7 +13,6 @@ export type ErrorEventRow = {
   message: string;
   level: string;
   service: string | null;
-  session_id: string | null;
   user_id: string | null;
   payload: unknown;
   created_at: string;
@@ -31,7 +29,6 @@ export async function insertErrorEvent(
     message: input.message,
     level: input.level,
     service: input.service ?? null,
-    session_id: input.session_id ?? null,
     user_id: input.user_id ?? null,
     payload: input.payload ?? null,
   }) as unknown as ErrorEventRow;

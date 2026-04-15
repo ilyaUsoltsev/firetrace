@@ -20,9 +20,9 @@ export async function createClickEvent(
   next: NextFunction,
 ) {
   try {
-    const { session_id, user_id, event_name, page, element, payload } = req.body ?? {};
+    const { user_id, event_name, page, element, payload } = req.body ?? {};
 
-    if (!session_id || !event_name) {
+    if (!event_name) {
       res.status(400).json({
         error: 'session_id and event_name are required',
       });
@@ -30,7 +30,6 @@ export async function createClickEvent(
     }
 
     const row = await insertClickEvent({
-      session_id,
       user_id,
       event_name,
       page,

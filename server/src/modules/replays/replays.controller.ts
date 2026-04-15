@@ -20,14 +20,14 @@ export async function createReplay(
   next: NextFunction,
 ) {
   try {
-    const { session_id, events } = req.body ?? {};
+    const { events, message } = req.body ?? {};
 
-    if (!session_id || !events) {
+    if (!events) {
       res.status(400).json({ error: 'session_id and events are required' });
       return;
     }
 
-    const row = await insertReplay({ session_id, events });
+    const row = await insertReplay({ events, message });
     res.status(201).json(row);
   } catch (err) {
     next(err);

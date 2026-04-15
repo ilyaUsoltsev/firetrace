@@ -18,6 +18,30 @@ export async function appendEntry(
   return entry;
 }
 
+function extractJsonObjects(content: string): Record<string, unknown>[] {
+  const results: Record<string, unknown>[] = [];
+  let depth = 0;
+  let start = -1;
+
+  for (let i = 0; i < content.length; i++) {
+    if (content[i] === '{') {
+      if (depth === 0) start = i;
+      depth++;
+    } else if (content[i] === '}') {
+      depth--;
+      if (depth === 0 && start !== -1) {
+        try {
+          results.push(JSON.parse(content.slice(start, i + 1)) as Record<string, unknown>);
+        } catch {
+          // skip malformed objects
+        }
+        start = -1;
+      }
+    }
+  }
+  return results;
+}
+
 export async function readEntries(
   type: string,
   limit = 100,
@@ -28,10 +52,6 @@ export async function readEntries(
   } catch {
     return [];
   }
-  const entries = content
-    .split('\n')
-    .filter((line) => line.trim())
-    .map((line) => JSON.parse(line) as Record<string, unknown>)
-    .filter((entry) => entry.type === type);
+  const entries = extractJsonObjects(content).filter((entry) => entry.type === type);
   return entries.slice(-limit).reverse();
 }

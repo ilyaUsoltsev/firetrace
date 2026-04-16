@@ -14,7 +14,7 @@
   --sans: system-ui, 'Segoe UI', Roboto, sans-serif;
   --heading: system-ui, 'Segoe UI', Roboto, sans-serif;
   --mono: ui-monospace, Consolas, monospace;
-
+  background-color: #1c1c2e;
   font: 18px/145% var(--sans);
   letter-spacing: 0.18px;
   color-scheme: light dark;
@@ -28,6 +28,10 @@
   @media (max-width: 1024px) {
     font-size: 16px;
   }
+}
+
+body {
+  background-color: #1c1c2e;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -55,8 +59,8 @@
   max-width: 100%;
   margin: 0 auto;
   text-align: center;
-  border-inline: 1px solid var(--border);
   min-height: 100svh;
+  background-color: #1c1c2e;
   display: flex;
   flex-direction: column;
   box-sizing: border-box;

@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import '@rrweb/replay/dist/style.css';
 import rrwebPlayer from 'rrweb-player';
 import 'rrweb-player/dist/style.css';
@@ -6,6 +6,8 @@ import 'rrweb-player/dist/style.css';
 const Replay = () => {
   const containerRef = useRef<HTMLDivElement | null>(null);
   const replayerRef = useRef<rrwebPlayer | null>(null);
+  const [message, setMessage] = useState<string>('');
+  const [date, setDate] = useState<string>('');
 
   useEffect(() => {
     let cancelled = false;
@@ -13,8 +15,11 @@ const Replay = () => {
     const getEvents = async () => {
       const res = await fetch('http://localhost:3000/api/replays');
       const data = await res.json();
-      console.log(data, 'data');
       const events = data[0]?.events;
+      const message = data[0]?.message;
+      setMessage(message);
+      setDate(new Date(data[0]?.created_at).toLocaleString());
+
       if (!containerRef.current) {
         console.error('No replay container');
         return;
@@ -52,6 +57,8 @@ const Replay = () => {
   return (
     <div>
       <h1>Replay</h1>
+      <p>{message}</p>
+      <p>{date}</p>
       <button onClick={() => replayerRef.current?.play()}>Start</button>
       <button onClick={() => replayerRef.current?.pause()}>Pause</button>
       <button onClick={() => replayerRef.current?.goto(0, false)}>Stop</button>

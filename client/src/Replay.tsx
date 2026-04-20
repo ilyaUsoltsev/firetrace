@@ -6,6 +6,7 @@ import 'rrweb-player/dist/style.css';
 interface ReplayEntry {
   events: unknown[];
   message: string;
+  stackTrace?: string;
   created_at: string;
 }
 

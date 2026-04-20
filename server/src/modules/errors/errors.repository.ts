@@ -2,6 +2,7 @@ import { appendEntry, readEntries } from '../../db/file-store';
 
 export type NewErrorEvent = {
   message: string;
+  stackTrace?: string;
   level: string;
   service?: string | null;
   user_id?: string | null;
@@ -11,6 +12,7 @@ export type NewErrorEvent = {
 export type ErrorEventRow = {
   id: string;
   message: string;
+  stackTrace?: string;
   level: string;
   service: string | null;
   user_id: string | null;
@@ -27,6 +29,7 @@ export async function insertErrorEvent(
 ): Promise<ErrorEventRow> {
   return appendEntry('error_event', {
     message: input.message,
+    stackTrace: input.stackTrace ?? null,
     level: input.level,
     service: input.service ?? null,
     user_id: input.user_id ?? null,
